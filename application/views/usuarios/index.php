@@ -35,9 +35,9 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
-							<div class="card-header"><h3><?php echo $titulo; ?></h3></div>
+							<div class="card-header"><a class="btn btn-success" href="">+ Novo</a></div>
 							<div class="card-body">
-								<table id="data_table" class="table">
+								<table class="table data-table">
 									<thead>
 									<tr>
 										<th>#</th>
@@ -58,8 +58,22 @@
 										<td><?php echo ($usuario->active == 1 ? '<span class="badge badge-success">Sim</span>' : '<span class="badge badge-danger">Não</span>'); ?></td>
 										<td>
 											<div class="table-actions text-center">
-												<a href="#"><i class="ik ik-edit-2"></i></a>
-												<a href="#"><i class="ik ik-trash-2"></i></a>
+												<button type="button"
+														class="btn btn-icon btn-primary"
+														data-toggle="tooltip"
+														data-placement="top"
+														title="Editar">
+													<i class="ik ik-edit"></i>
+												</button>
+
+												<button type="button"
+														class="btn btn-icon btn-danger"
+														data-toggle="tooltip"
+														data-placement="top"
+														title="Excluir">
+													<i class="ik ik-trash"></i>
+												</button>
+
 											</div>
 										</td>
 									</tr>
