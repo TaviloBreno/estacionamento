@@ -38,38 +38,7 @@ class Usuarios extends CI_Controller
 			$this->form_validation->set_rules('perfil_usuario', 'Perfil de Acesso', 'required');
 
 			if ($this->form_validation->run()) {
-				$data = elements(
-					array(
-						'first_name',
-						'last_name',
-						'email',
-						'username',
-						'password',
-						'perfil_usuario',
-					),
-					$this->input->post()
-				);
 
-				$data = $this->security->xss_clean($data);
-
-				$perfil_usuario = $this->input->post('perfil_usuario');
-
-				$password = $this->input->post('password');
-
-				if (!$password) {
-					unset($data['password']);
-				}
-
-				if ($this->ion_auth->update($usuario_id, $data)) {
-					$this->ion_auth->remove_from_group(NULL, $usuario_id);
-					$this->ion_auth->add_to_group($perfil_usuario, $usuario_id);
-
-					$this->session->set_flashdata('sucesso', 'Usuário atualizado com sucesso');
-				} else {
-					$this->session->set_flashdata('error', 'Erro ao atualizar usuário');
-				}
-
-				redirect('usuarios');
 			} else {
 				$data = array(
 					'titulo' => 'Editar Usuário',
