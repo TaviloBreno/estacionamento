@@ -44,6 +44,7 @@
 										<th>Usuário</th>
 										<th>Email</th>
 										<th>Nome</th>
+										<th>Perfil de acesso</th>
 										<th>Ativo</th>
 										<th class="text-center">Ações</th>
 									</tr>
@@ -55,24 +56,26 @@
 										<td><?php echo $usuario->username; ?></td>
 										<td><?php echo $usuario->email; ?></td>
 										<td><?php echo $usuario->first_name.' '.$usuario->last_name; ?></td>
+										<td><?php echo ($this->ion_auth->is_admin($usuario->id) ? 'Administrador' : 'Funcionário'); ?></td>
 										<td><?php echo ($usuario->active == 1 ? '<span class="badge badge-success">Sim</span>' : '<span class="badge badge-danger">Não</span>'); ?></td>
 										<td>
 											<div class="table-actions text-center">
-												<button type="button"
+												<a type="button"
+												   		href="<?php echo base_url('usuarios/core/'.$usuario->id); ?>"
 														class="btn btn-icon btn-primary"
 														data-toggle="tooltip"
 														data-placement="top"
-														title="Editar">
+														title="Editar <?php echo ucfirst(str_replace('a', 'á', $this->router->fetch_class())); ?>">
 													<i class="ik ik-edit"></i>
-												</button>
+												</a>
 
-												<button type="button"
+												<a type="button"
 														class="btn btn-icon btn-danger"
 														data-toggle="tooltip"
 														data-placement="top"
-														title="Excluir">
+														title="Excluir <?php echo ucfirst(str_replace('a', 'á', $this->router->fetch_class())); ?>">
 													<i class="ik ik-trash"></i>
-												</button>
+												</a>
 
 											</div>
 										</td>

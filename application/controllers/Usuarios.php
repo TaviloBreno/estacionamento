@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('Ação não permitida');
+defined('BASEPATH') or exit('Ação não permitida');
 
 class Usuarios extends CI_Controller
 {
@@ -22,5 +22,66 @@ class Usuarios extends CI_Controller
 		$this->load->view('layout/header', $data);
 		$this->load->view('usuarios/index');
 		$this->load->view('layout/footer');
+	}
+
+	public function core($usuario_id = null)
+	{
+		if (!$usuario_id) {
+
+		} else {
+			$this->form_validation->set_rules('first_name', 'Nome', 'trim|required|min_length[5]|max_length[20]');
+			$this->form_validation->set_rules('last_name', 'Sobrenome', 'trim|required|min_length[5]|max_length[20]');
+			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|max_length[30]');
+			$this->form_validation->set_rules('username', 'Usuário', 'trim|required|min_length[5]|max_length[30]');
+			$this->form_validation->set_rules('password', 'Senha', 'trim|min_length[6]|max_length[200]');
+			$this->form_validation->set_rules('confirm_password', 'Confirmação de Senha', 'trim|matches[password]');
+			$this->form_validation->set_rules('perfil_usuario', 'Perfil de Acesso', 'required');
+
+			if ($this->form_validation->run()) {
+				$data = elements(
+					array(
+						'first_name',
+						'last_name',
+						'email',
+						'username',
+						'password',
+						'perfil_usuario',
+					),
+					$this->input->post()
+				);
+
+				$data = $this->security->xss_clean($data);
+
+				$perfil_usuario = $this->input->post('perfil_usuario');
+
+				$password = $this->input->post('password');
+
+				if (!$password) {
+					unset($data['password']);
+				}
+
+				if ($this->ion_auth->update($usuario_id, $data)) {
+					$this->ion_auth->remove_from_group(NULL, $usuario_id);
+					$this->ion_auth->add_to_group($perfil_usuario, $usuario_id);
+
+					$this->session->set_flashdata('sucesso', 'Usuário atualizado com sucesso');
+				} else {
+					$this->session->set_flashdata('error', 'Erro ao atualizar usuário');
+				}
+
+				redirect('usuarios');
+			} else {
+				$data = array(
+					'titulo' => 'Editar Usuário',
+					'subtitulo' => 'Edite os dados do usuário',
+					'icone_view' => 'ik ik-user',
+					'usuario' => $this->ion_auth->user($usuario_id)->row(),
+					'perfil' => $this->ion_auth->get_users_groups($usuario_id)->row(),
+				);
+				$this->load->view('layout/header', $data);
+				$this->load->view('usuarios/core');
+				$this->load->view('layout/footer');
+			}
+		}
 	}
 }
