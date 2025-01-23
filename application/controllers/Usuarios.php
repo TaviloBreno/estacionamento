@@ -27,15 +27,57 @@ class Usuarios extends CI_Controller
 	public function core($usuario_id = null)
 	{
 		if (!$usuario_id) {
+			// Cadastrando
+
+			$this->form_validation->set_rules('first_name', 'Nome', 'trim|required|min_length[5]|max_length[45]');
+			$this->form_validation->set_rules('last_name', 'Sobrenome', 'trim|required|min_length[5]|max_length[45]');
+			$this->form_validation->set_rules('username', 'Usuário', 'trim|required|min_length[5]|max_length[30]|is_unique[users.username]');
+			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|max_length[30]|is_unique[users.email]');
+			$this->form_validation->set_rules('password', 'Senha', 'trim|required|min_length[6]|max_length[200]');
+			$this->form_validation->set_rules('confirm_password', 'Confirmação de Senha', 'trim|required|matches[password]');
+
+			if ($this->form_validation->run()) {
+				$data = elements(
+					array(
+						'first_name',
+						'last_name',
+						'username',
+						'email',
+						'password',
+					),
+					$this->input->post()
+				);
+
+				$data = html_escape($data);
+
+				if($this->ion_auth->register($data['username'], $data['password'], $data['email'], array('first_name' => $data['first_name'], 'last_name' => $data['last_name']))) {
+					$this->session->set_flashdata('sucesso', 'Usuário cadastrado com sucesso');
+				} else {
+					$this->session->set_flashdata('error', 'Erro ao cadastrar usuário');
+				}
+
+				redirect($this->router->fetch_class());
+
+			} else {
+				$data = array(
+					'titulo' => 'Cadastrar Usuário',
+					'subtitulo' => 'Cadastre os dados do usuário',
+					'icone_view' => 'ik ik-user',
+				);
+
+				$this->load->view('layout/header', $data);
+				$this->load->view('usuarios/core');
+				$this->load->view('layout/footer');
+			}
 
 		} else {
 			$perfil_atual = $this->ion_auth->get_users_groups($usuario_id)->row();
 
-			$this->form_validation->set_rules('first_name', 'Nome', 'trim|required|min_length[5]|max_length[20]');
-			$this->form_validation->set_rules('last_name', 'Sobrenome', 'trim|required|min_length[5]|max_length[20]');
-			$this->form_validation->set_rules('username', 'Usuário', 'trim|required|min_length[5]|max_length[30]|callback_username_check');
-			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|max_length[30]|callback_email_check');
-			$this->form_validation->set_rules('password', 'Senha', 'trim|min_length[6]|max_length[200]');
+			$this->form_validation->set_rules('first_name', 'Nome', 'trim|required|min_length[5]|max_length[45]');
+			$this->form_validation->set_rules('last_name', 'Sobrenome', 'trim|required|min_length[5]|max_length[45]');
+			$this->form_validation->set_rules('username', 'Usuário', 'trim|required|min_length[5]|max_length[30]|is_unique[users.username]');
+			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|max_length[30]|is_unique[users.email]');
+			$this->form_validation->set_rules('password', 'Senha', 'trim|min_length[6]|max_length[200]|required');
 			$this->form_validation->set_rules('confirm_password', 'Confirmação de Senha', 'trim|matches[password]');
 
 
