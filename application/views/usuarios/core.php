@@ -45,7 +45,7 @@
 							<div class="card-header"><?php echo (isset($usuario) ? "<i class='ik ik-calendar'></i> Data da última atualização: ".formata_data_banco_com_hora($usuario->data_ultima_alteracao) : '');?></div>
 							<div class="card-body">
 
-								<form class="forms-sample" name="form_core" method="post" action="<?php echo base_url('usuarios/core'); ?>">
+								<form class="forms-sample" name="form_core" method="post" action="<?php echo base_url('usuarios/core/' . (isset($usuario) ? $usuario->id : '')); ?>">
 									<div class="form-row">
 										<!-- Nome -->
 										<div class="form-group col-md-6">
@@ -130,8 +130,12 @@
 										</div>
 									</div>
 
-									<?php if (isset($usuario)): ?>
+									<?php if(isset($usuario)): ?>
+									<div class="form-row">
+										<div class="col-md-12">
 										<input type="hidden" name="usuario_id" value="<?php echo $usuario->id; ?>">
+										</div>
+									</div>
 									<?php endif; ?>
 
 									<button type="submit" class="btn btn-primary mr-2">Salvar</button>
