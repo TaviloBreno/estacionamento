@@ -75,9 +75,9 @@ class Usuarios extends CI_Controller
 
 			$this->form_validation->set_rules('first_name', 'Nome', 'trim|required|min_length[5]|max_length[45]');
 			$this->form_validation->set_rules('last_name', 'Sobrenome', 'trim|required|min_length[5]|max_length[45]');
-			$this->form_validation->set_rules('username', 'Usuário', 'trim|required|min_length[5]|max_length[30]|is_unique[users.username]');
-			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|max_length[30]|is_unique[users.email]');
-			$this->form_validation->set_rules('password', 'Senha', 'trim|min_length[6]|max_length[200]|required');
+			$this->form_validation->set_rules('username', 'Usuário', 'trim|required|min_length[5]|max_length[30]|callback_username_check');
+			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|max_length[30]|callback_email_check');
+			$this->form_validation->set_rules('password', 'Senha', 'trim|min_length[6]|max_length[200]');
 			$this->form_validation->set_rules('confirm_password', 'Confirmação de Senha', 'trim|matches[password]');
 
 
@@ -155,5 +155,26 @@ class Usuarios extends CI_Controller
 		} else {
 			return true;
 		}
+	}
+
+	public function del($usuario_id = null)
+	{
+		if (!$usuario_id || !$this->ion_auth->user($usuario_id)->row()) {
+			$this->session->set_flashdata('error', 'Usuário não encontrado');
+			redirect($this->router->fetch_class());
+		}
+
+		if ($this->ion_auth->is_admin($usuario_id)) {
+			$this->session->set_flashdata('error', 'Administradores não podem ser excluídos');
+			redirect($this->router->fetch_class());
+		}
+
+		if ($this->ion_auth->delete_user($usuario_id)) {
+			$this->session->set_flashdata('sucesso', 'Usuário excluído com sucesso');
+		} else {
+			$this->session->set_flashdata('error', 'Erro ao excluir usuário');
+		}
+
+		redirect($this->router->fetch_class());
 	}
 }

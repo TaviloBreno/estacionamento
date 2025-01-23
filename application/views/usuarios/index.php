@@ -82,29 +82,42 @@
 										<td><?php echo $usuario->email; ?></td>
 										<td><?php echo $usuario->first_name.' '.$usuario->last_name; ?></td>
 										<td><?php echo ($this->ion_auth->is_admin($usuario->id) ? 'Administrador' : 'Funcionário'); ?></td>
-										<td><?php echo ($usuario->active == 1 ? '<span class="badge badge-success">Sim</span>' : '<span class="badge badge-danger">Não</span>'); ?></td>
+										<td><?php echo ($usuario->active == 1 ? '<span class="badge badge-success"><i class="fas fa-lock-open"></i> Sim</span>' : '<span class="badge badge-danger"><i class="fas fa-lock"></i> Não</span>'); ?></td>
 										<td>
 											<div class="table-actions text-center">
 												<a type="button"
 												   		href="<?php echo base_url('usuarios/core/'.$usuario->id); ?>"
 														class="btn btn-icon btn-primary"
+												   		style="color: white;"
 														data-toggle="tooltip"
 														data-placement="top"
 														title="Editar <?php echo ucfirst(str_replace('a', 'á', $this->router->fetch_class())); ?>">
 													<i class="ik ik-edit"></i>
 												</a>
 
-												<a type="button"
-														class="btn btn-icon btn-danger"
-														data-toggle="tooltip"
-														data-placement="top"
-														title="Excluir <?php echo ucfirst(str_replace('a', 'á', $this->router->fetch_class())); ?>">
+												<button type="button" class="btn btn-icon btn-danger" data-toggle="modal" data-target="#user-<?php echo $usuario->id; ?>" title="Excluir <?php echo ucfirst(str_replace('a', 'á', $this->router->fetch_class())); ?>">
 													<i class="ik ik-trash"></i>
-												</a>
+												</button>
 
 											</div>
 										</td>
 									</tr>
+
+										<div class="modal fade" id="user-<?php echo $usuario->id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalCenterLabel">Você tem certeza que deseja excluir o usuário <?php echo $usuario->username;  ?>?</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+														<a type="button" href="<?php echo base_url($this->router->fetch_class().'/del/'.$usuario->id); ?>" class="btn btn-primary" style="color: white;font-style: none;">Sim, excluir</a>
+													</div>
+												</div>
+											</div>
+										</div>
+
 									<?php endforeach; ?>
 									</tbody>
 								</table>
