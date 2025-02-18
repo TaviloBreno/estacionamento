@@ -8,6 +8,19 @@
 		<div class="main-content">
 			<div class="container-fluid">
 
+				<?php if($message = $this->session->flashdata('sucesso')): ?>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="alert bg-success alert-dismissible fade show text-white" role="alert">
+								<strong><?php echo $message; ?></strong>
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				<?php endif; ?>
+
 
 
 			</div>

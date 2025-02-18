@@ -104,10 +104,10 @@
 									</tr>
 
 										<div class="modal fade" id="user-<?php echo $usuario->id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
-											<div class="modal-dialog modal-dialog-centered" role="document">
+											<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 												<div class="modal-content">
 													<div class="modal-header">
-														<h5 class="modal-title" id="exampleModalCenterLabel">Você tem certeza que deseja excluir o usuário <?php echo $usuario->username;  ?>?</h5>
+														<h5 class="modal-title" id="exampleModalCenterLabel"><i class="fas fa-exclamation-triangle alert-warning"></i> Você tem certeza que deseja excluir o usuário <?php echo $usuario->username;  ?>?</h5>
 														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 													</div>
 													<div class="modal-footer">

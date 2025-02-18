@@ -3,6 +3,15 @@ defined('BASEPATH') or exit('Ação não permitida');
 
 class Usuarios extends CI_Controller
 {
+	public function __construct()
+	{
+		parent::__construct();
+
+		if (!$this->ion_auth->logged_in()) {
+			redirect('login');
+		}
+	}
+
 	public function index()
 	{
 		$data = array(
@@ -159,17 +168,17 @@ class Usuarios extends CI_Controller
 
 	public function del($usuario_id = null)
 	{
-		if (!$usuario_id || !$this->ion_auth->user($usuario_id)->row()) {
+		if(!$usuario_id || !$this->core_model->get_by_id('users', array('id' => $usuario_id))) {
 			$this->session->set_flashdata('error', 'Usuário não encontrado');
 			redirect($this->router->fetch_class());
 		}
 
-		if ($this->ion_auth->is_admin($usuario_id)) {
+		if($this->ion_auth->is_admin($usuario_id)) {
 			$this->session->set_flashdata('error', 'Administradores não podem ser excluídos');
 			redirect($this->router->fetch_class());
 		}
 
-		if ($this->ion_auth->delete_user($usuario_id)) {
+		if($this->ion_auth->delete_user($usuario_id)) {
 			$this->session->set_flashdata('sucesso', 'Usuário excluído com sucesso');
 		} else {
 			$this->session->set_flashdata('error', 'Erro ao excluir usuário');
