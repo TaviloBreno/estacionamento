@@ -33,6 +33,29 @@
 					</div>
 				</div>
 
+				<?php if($message = $this->session->flashdata('sucesso')): ?>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="alert bg-success alert-dismissible fade show text-white" role="alert">
+								<strong><?php echo $message; ?></strong>
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				<?php elseif($message = $this->session->flashdata('error')): ?>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="alert bg-danger alert-dismissible fade show text-white" role="alert">
+								<strong><?php echo $message; ?></strong>
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				<?php endif; ?>
 
 				<div class="row">
 					<div class="col-md-12">
@@ -40,7 +63,7 @@
 							<div class="card-header"><?php echo (isset($sistema) ? "<i class='ik ik-calendar'></i> Data da última atualização: ".formata_data_banco_com_hora($sistema->sistema_data_alteracao) : '');?></div>
 							<div class="card-body">
 
-								<form class="forms-sample" name="form_core" method="post" action="<?php echo base_url('usuarios/core/' . (isset($sistema) ? $sistema->sistema_id : '')); ?>">
+								<form class="forms-sample" name="form_core" method="post">
 									<div class="form-row">
 										<div class="col-md-6 mb-20">
 											<label for="sistema_razao_social">Razão Social</label>
@@ -144,10 +167,12 @@
 												   value="<?php echo (isset($sistema) ? $sistema->sistema_estado : set_value('sistema_estado')); ?>">
 											<?php echo form_error('sistema_estado', '<div class="text-danger">', '</div>'); ?>
 										</div>
+									</div>
 
-										<div class="col-md-6 mb-20">
-											<label for="sistema_txt_ordem_servico">Texto do ticket de estacionamento</label>
-											<textarea class="form-control" id="sistema_texto_ticket" name="sistema_texto_ticket" placeholder="Texto do ticket de estacionamento"><?php echo (isset($sistema) ? $sistema->sistema_texto_ticket : set_value('sistema_texto_ticket')); ?></textarea>
+									<div class="form-row">
+										<div class="col-md-12 mb-20">
+											<label for="sistema_texto_ticket">Texto do Ticket</label>
+											<textarea class="form-control" id="sistema_texto_ticket" name="sistema_texto_ticket" placeholder="Texto do Ticket" rows="4"><?php echo (isset($sistema) ? $sistema->sistema_texto_ticket : set_value('sistema_texto_ticket')); ?></textarea>
 											<?php echo form_error('sistema_texto_ticket', '<div class="text-danger">', '</div>'); ?>
 										</div>
 									</div>

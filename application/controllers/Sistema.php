@@ -45,6 +45,7 @@ class Sistema extends CI_Controller
 					'sistema_numero',
 					'sistema_cidade',
 					'sistema_estado',
+					'sistema_texto_ticket',
 				),
 				$this->input->post()
 			);
@@ -52,7 +53,7 @@ class Sistema extends CI_Controller
 			$data = html_escape($data);
 
 			$this->core_model->update('sistema', $data, array('sistema_id' => 1));
-			redirect('sistema');
+			redirect($this->router->fetch_class());
 		}else{
 			$data = array(
 				'titulo' => 'Gerenciar Sistema',
