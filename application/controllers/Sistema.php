@@ -18,6 +18,10 @@ class Sistema extends CI_Controller
 			'titulo' => 'Gerenciar Sistema',
 			'subtitulo' => 'Aqui você pode visualizar, adicionar, editar e excluir os usuários cadastrados no sistema',
 			'icone_view' => 'ik ik-settings',
+			'scripts' => array(
+				'mask/jquery.mask.min.js',
+				'mask/custom.js',
+			),
 			'sistema' => $this->core_model->get_by_id('sistema', array('sistema_id' => 1)),
 		);
 
