@@ -7,6 +7,7 @@ class Login extends CI_Controller
 	{
 		$data = array(
 			'titulo' => 'Login',
+			'is_login_page' => true
 		);
 
 		$this->load->view('layout/header', $data);
@@ -21,7 +22,10 @@ class Login extends CI_Controller
 		$remember = FALSE;
 
 		if($this->ion_auth->login($identity, $password, $remember)) {
-			$this->session->set_flashdata('sucesso', 'Seja muito bem vindo(a)!');
+			$usuario = $this->core_model->get_by_id('users', array('email' => $identity));
+
+
+			$this->session->set_flashdata('sucesso', 'Seja muito bem vindo(a)! '.$usuario->first_name);
 			redirect('/');
 		} else {
 			$this->session->set_flashdata('error', 'Usuário ou senha inválidos');

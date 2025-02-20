@@ -66,59 +66,58 @@
 									<thead>
 									<tr>
 										<th>#</th>
-										<th>Usuário</th>
-										<th>Email</th>
-										<th>Nome</th>
-										<th>Perfil de acesso</th>
+										<th class="text-center">Categoria</th>
+										<th class="text-center">Valor da hora</th>
+										<th class="text-center">Valor da mensalidade</th>
+										<th class="text-center">Número de vagas</th>
 										<th>Ativo</th>
 										<th class="text-center">Ações</th>
 									</tr>
 									</thead>
 									<tbody>
-									<?php foreach ($usuarios as $usuario): ?>
-									<tr>
-										<td><?php echo $usuario->id; ?></td>
-										<td><?php echo $usuario->username; ?></td>
-										<td><?php echo $usuario->email; ?></td>
-										<td><?php echo $usuario->first_name.' '.$usuario->last_name; ?></td>
-										<td><?php echo ($this->ion_auth->is_admin($usuario->id) ? 'Administrador' : 'Funcionário'); ?></td>
-										<td><?php echo ($usuario->active == 1 ? '<span class="badge badge-success"><i class="fas fa-lock-open"></i> Sim</span>' : '<span class="badge badge-danger"><i class="fas fa-lock"></i> Não</span>'); ?></td>
-										<td>
-											<div class="table-actions text-center">
-												<a type="button"
-												   		href="<?php echo base_url('usuarios/core/'.$usuario->id); ?>"
-														class="btn btn-icon btn-primary"
-												   		style="color: white;"
-														data-toggle="tooltip"
-														data-placement="top"
-														title="Editar <?php echo ucfirst(str_replace('a', 'á', $this->router->fetch_class())); ?>">
-													<i class="ik ik-edit"></i>
-												</a>
+									<?php foreach ($precificacoes as $categoria): ?>
+										<tr>
+											<td><?php echo $categoria->precificacao_id; ?></td>
+											<td class="text-center"><?php echo $categoria->precificacao_categoria; ?></td>
+											<td class="text-center"><?php echo 'R$ '.$categoria->precificacao_valor_hora; ?></td>
+											<td class="text-center"><?php echo 'R$ '.$categoria->precificacao_valor_mensalidade; ?></td>
+											<td class="text-center"><?php echo $categoria->precificacao_numero_vagas; ?></td>
+											<td><?php echo ($categoria->precificacao_ativa == 1 ? '<span class="badge badge-success">Sim</span>' : '<span class="badge badge-danger">Não</span>'); ?></td>
+											<td>
+												<div class="table-actions text-center">
+													<a type="button" href="<?php echo base_url('usuarios/core/'.$categoria->precificacao_id); ?>" class="btn btn-icon btn-primary" style="color: white;" data-toggle="tooltip" data-placement="top" title="Editar <?php echo ucfirst(str_replace('a', 'á', $this->router->fetch_class())); ?>">
+														<i class="ik ik-edit"></i>
+													</a>
 
-												<button type="button" class="btn btn-icon btn-danger" data-toggle="modal" data-target="#user-<?php echo $usuario->id; ?>" title="Excluir <?php echo ucfirst(str_replace('a', 'á', $this->router->fetch_class())); ?>">
-													<i class="ik ik-trash"></i>
-												</button>
+													<button type="button" class="btn btn-icon btn-danger" data-toggle="modal" data-target="#categoria-<?php echo $categoria->precificacao_id; ?>" title="Excluir <?php echo ucfirst(str_replace('a', 'á', $this->router->fetch_class())); ?>">
+														<i class="ik ik-trash"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
 
-											</div>
-										</td>
-									</tr>
-
-										<div class="modal fade" id="user-<?php echo $usuario->id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+										<div class="modal fade" id="categoria-<?php echo $categoria->precificacao_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
 											<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 												<div class="modal-content">
 													<div class="modal-header">
-														<h5 class="modal-title" id="exampleModalCenterLabel"><i class="fas fa-exclamation-triangle alert-warning"></i> Você tem certeza que deseja excluir o usuário <?php echo $usuario->username;  ?>?</h5>
-														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+														<h5 class="modal-title" id="exampleModalCenterLabel">
+															<i class="fas fa-exclamation-triangle alert-warning"></i>
+															Você tem certeza que deseja excluir a categoria <?php echo $categoria->precificacao_categoria; ?>?
+														</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
-														<a type="button" href="<?php echo base_url($this->router->fetch_class().'/del/'.$usuario->id); ?>" class="btn btn-primary" style="color: white;font-style: none;">Sim, excluir</a>
+														<a type="button" href="<?php echo base_url($this->router->fetch_class().'/del/'.$categoria->precificacao_id); ?>" class="btn btn-primary" style="color: white;">Sim, excluir</a>
 													</div>
 												</div>
 											</div>
 										</div>
 
 									<?php endforeach; ?>
+
 									</tbody>
 								</table>
 							</div>

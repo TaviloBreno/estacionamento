@@ -32,6 +32,9 @@
 
 				<div class="nav-lavel">Administração</div>
 				<div class="nav-item">
+					<a data-toggle="tooltip" data-placement="bottom" title="Gerenciar Precificações" href="<?php echo base_url('precificacoes'); ?>"><i class="ik ik-dollar-sign"></i><span>Precificações</span></a>
+				</div>
+				<div class="nav-item">
 					<a data-toggle="tooltip" data-placement="bottom" title="Gerenciar Usuários" href="<?php echo base_url('usuarios'); ?>"><i class="ik ik-users"></i><span>Gerenciar Usuários</span></a>
 				</div>
 				<div class="nav-item">
