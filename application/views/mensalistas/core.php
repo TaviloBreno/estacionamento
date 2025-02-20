@@ -21,13 +21,8 @@
 						<nav class="breadcrumb-container" aria-label="breadcrumb">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item">
-									<a title="Home" data-toggle="tooltip" data-placement="top" href="<?php echo base_url('precificacoes'); ?>">
+									<a title="Home" data-toggle="tooltip" data-placement="top" href="<?php echo base_url($this->router->fetch_class()); ?>">
 										<i class="ik ik-home"></i>
-									</a>
-								</li>
-								<li class="breadcrumb-item">
-									<a title="Listar <?php echo ucfirst($this->router->fetch_class()); ?>" data-toggle="tooltip" data-placement="top" href="<?php echo base_url($this->router->fetch_class()); ?>">
-										Listar <?php echo ucfirst($this->router->fetch_class()); ?>
 									</a>
 								</li>
 								<li class="breadcrumb-item active" aria-current="page"><?php echo $titulo; ?></li>
@@ -40,10 +35,10 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-header"><?php echo (isset($categoria) ? "<i class='ik ik-calendar'></i> Última alteração: " . formata_data_banco_com_hora($categoria->precificacao_data_alteracao) : ''); ?></div>
+						<div class="card-header"><?php echo (isset($categoria) ? "<i class='ik ik-calendar'></i> Última alteração: " . formata_data_banco_com_hora($mensalista->mensalista_data_alteracao) : ''); ?></div>
 						<div class="card-body">
 
-							<form class="forms-sample" name="form_core" method="post" action="<?php echo base_url('mensalistas/core/' . (isset($mensalista) ? $mensalista->mensalista_id : '')); ?>">
+							<form class="forms-sample" name="form_core" method="POST" action="<?php echo base_url($this->router->fetch_class().'/core/' . (isset($mensalista) ? $mensalista->mensalista_id : '')); ?>">
 								<div class="form-row">
 									<!-- Nome -->
 									<div class="form-group col-md-6">
@@ -74,7 +69,7 @@
 									<!-- CPF -->
 									<div class="form-group col-md-6">
 										<label for="mensalista_cpf">CPF</label>
-										<input type="text" class="form-control" id="mensalista_cpf" name="mensalista_cpf" placeholder="CPF"
+										<input type="text" class="form-control cpf" id="mensalista_cpf" name="mensalista_cpf" placeholder="CPF"
 											   value="<?php echo (isset($mensalista) ? $mensalista->mensalista_cpf : set_value('mensalista_cpf')); ?>">
 										<?php echo form_error('mensalista_cpf', '<div class="text-danger">', '</div>'); ?>
 									</div>
@@ -84,7 +79,7 @@
 									<!-- RG -->
 									<div class="form-group col-md-6">
 										<label for="mensalista_rg">RG</label>
-										<input type="text" class="form-control" id="mensalista_rg" name="mensalista_rg" placeholder="RG"
+										<input type="text" class="form-control rg" id="mensalista_rg" name="mensalista_rg" placeholder="RG"
 											   value="<?php echo (isset($mensalista) ? $mensalista->mensalista_rg : set_value('mensalista_rg')); ?>">
 										<?php echo form_error('mensalista_rg', '<div class="text-danger">', '</div>'); ?>
 									</div>
@@ -102,7 +97,7 @@
 									<!-- Telefone Fixo -->
 									<div class="form-group col-md-6">
 										<label for="mensalista_telefone_fixo">Telefone Fixo</label>
-										<input type="text" class="form-control" id="mensalista_telefone_fixo" name="mensalista_telefone_fixo" placeholder="Telefone Fixo"
+										<input type="text" class="form-control phone_with_ddd" id="mensalista_telefone_fixo" name="mensalista_telefone_fixo" placeholder="Telefone Fixo"
 											   value="<?php echo (isset($mensalista) ? $mensalista->mensalista_telefone_fixo : set_value('mensalista_telefone_fixo')); ?>">
 										<?php echo form_error('mensalista_telefone_fixo', '<div class="text-danger">', '</div>'); ?>
 									</div>
@@ -110,7 +105,7 @@
 									<!-- Telefone Móvel -->
 									<div class="form-group col-md-6">
 										<label for="mensalista_telefone_movel">Telefone Móvel</label>
-										<input type="text" class="form-control" id="mensalista_telefone_movel" name="mensalista_telefone_movel" placeholder="Telefone Móvel"
+										<input type="text" class="form-control phone_with_ddd" id="mensalista_telefone_movel" name="mensalista_telefone_movel" placeholder="Telefone Móvel"
 											   value="<?php echo (isset($mensalista) ? $mensalista->mensalista_telefone_movel : set_value('mensalista_telefone_movel')); ?>">
 										<?php echo form_error('mensalista_telefone_movel', '<div class="text-danger">', '</div>'); ?>
 									</div>
@@ -120,7 +115,7 @@
 									<!-- CEP -->
 									<div class="form-group col-md-6">
 										<label for="mensalista_cep">CEP</label>
-										<input type="text" class="form-control" id="mensalista_cep" name="mensalista_cep" placeholder="CEP"
+										<input type="text" class="form-control cep" id="mensalista_cep" name="mensalista_cep" placeholder="CEP"
 											   value="<?php echo (isset($mensalista) ? $mensalista->mensalista_cep : set_value('mensalista_cep')); ?>">
 										<?php echo form_error('mensalista_cep', '<div class="text-danger">', '</div>'); ?>
 									</div>

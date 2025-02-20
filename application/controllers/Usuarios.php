@@ -24,6 +24,7 @@ class Usuarios extends CI_Controller
 				'datatables.net/js/jquery.dataTables.min.js',
 				'datatables.net-bs4/js/dataTables.bootstrap4.min.js',
 				'datatables.net/js/estacionamento.js',
+				'datatables.net/js/flashcards.js',
 			),
 			'usuarios' => $this->ion_auth->users()->result(),
 		);

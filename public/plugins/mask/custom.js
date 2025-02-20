@@ -9,6 +9,8 @@ $(function () {
     $('.uf').mask('AA');
     $('.dia_vencimento').mask('00');
     $('.selectonfocus').mask("00000000", {selectOnFocus: true});
+	$('.rg').mask('00.000.000-0');
+
 
     var SPMaskBehavior = function (val) {
         return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';

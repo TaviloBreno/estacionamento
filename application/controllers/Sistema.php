@@ -62,6 +62,7 @@ class Sistema extends CI_Controller
 				'scripts' => array(
 					'mask/jquery.mask.min.js',
 					'mask/custom.js',
+					'datatables.net/js/flashcards.js',
 				),
 				'sistema' => $this->core_model->get_by_id('sistema', array('sistema_id' => 1)),
 			);
