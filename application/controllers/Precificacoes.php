@@ -37,8 +37,49 @@ class Precificacoes extends CI_Controller
 	public function core($precificacao_id = null)
 	{
 		if (!$precificacao_id) {
-			// Lógica para criar uma nova precificação (se necessário)
-		} else {
+			$data = array(
+				'titulo' => 'Cadastrar Precificação',
+				'subtitulo' => 'Aqui você pode cadastrar uma nova precificação',
+				'icone_view' => 'ik ik-dollar-sign',
+				'styles' => array(
+					'plugins/mask/jquery.mask.min.css',
+				),
+				'scripts' => array(
+					'plugins/mask/jquery.mask.min.js',
+					'plugins/mask/app.js',
+				),
+			);
+
+			$this->form_validation->set_rules('precificacao_categoria', 'Categoria', 'trim|required|min_length[5]|max_length[30]|is_unique[precificacoes.precificacao_categoria]');
+			$this->form_validation->set_rules('precificacao_valor_hora', 'Valor por Hora', 'trim|required|max_length[10]');
+			$this->form_validation->set_rules('precificacao_valor_mensalidade', 'Valor da Mensalidade', 'trim|required|max_length[10]');
+			$this->form_validation->set_rules('precificacao_numero_vagas', 'Número de Vagas', 'trim|required|integer|greater_than[0]');
+
+			if ($this->form_validation->run()) {
+				$data = elements(
+					array(
+						'precificacao_categoria',
+						'precificacao_valor_hora',
+						'precificacao_valor_mensalidade',
+						'precificacao_numero_vagas',
+					),
+					$this->input->post()
+				);
+
+				// Adicionando o campo `precificacao_ativa` com valor padrão
+				$data['precificacao_ativa'] = 1;
+
+				$data = html_escape($data);
+
+				$this->core_model->insert('precificacoes', $data);
+				$this->session->set_flashdata('sucesso', 'Dados salvos com sucesso');
+				redirect($this->router->fetch_class());
+			} else {
+				$this->load->view('layout/header', $data);
+				$this->load->view('precificacoes/core');
+				$this->load->view('layout/footer');
+			}
+		}else {
 			if (!$this->core_model->get_by_id('precificacoes', array('precificacao_id' => $precificacao_id))) {
 				$this->session->set_flashdata('error', 'Precificação não encontrada');
 				redirect($this->router->fetch_class());
