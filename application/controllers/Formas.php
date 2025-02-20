@@ -22,9 +22,10 @@ class Formas extends CI_Controller
 				'plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css',
 			),
 			'scripts' => array(
-				'plugins/datatables.net/js/jquery.dataTables.min.js',
-				'plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js',
-				'plugins/datatables.net/js/formas.js',
+				'datatables.net/js/jquery.dataTables.min.js',
+				'datatables.net-bs4/js/dataTables.bootstrap4.min.js',
+				'datatables.net/js/formas.js',
+				'datatables.net/js/flashcards.js',
 			),
 			'formas' => $this->core_model->get_all('formas_pagamentos'),
 		);
@@ -51,7 +52,7 @@ class Formas extends CI_Controller
 				),
 			);
 
-			$this->form_validation->set_rules('forma_pagamento_nome', 'Nome da Forma de Pagamento', 'trim|required|min_length[5]|max_length[30]|is_unique[formas_pagamentos.forma_pagamento_nome]');
+			$this->form_validation->set_rules('forma_pagamento_nome', 'Nome da Forma de Pagamento', 'trim|required|min_length[3]|max_length[30]|is_unique[formas_pagamentos.forma_pagamento_nome]');
 			$this->form_validation->set_rules('forma_pagamento_ativa', 'Ativa', 'required');
 
 			if ($this->form_validation->run()) {
@@ -104,7 +105,7 @@ class Formas extends CI_Controller
 				'forma_pagamento' => $forma_pagamento,
 			);
 
-			$this->form_validation->set_rules('forma_pagamento_nome', 'Nome da Forma de Pagamento', 'trim|required|min_length[5]|max_length[30]|callback_check_nome_forma_pagamento');
+			$this->form_validation->set_rules('forma_pagamento_nome', 'Nome da Forma de Pagamento', 'trim|required|min_length[3]|max_length[30]|callback_check_nome_forma_pagamento');
 			$this->form_validation->set_rules('forma_pagamento_ativa', 'Ativa', 'required');
 
 			if ($this->form_validation->run()) {
@@ -150,6 +151,11 @@ class Formas extends CI_Controller
 	{
 		if (!$forma_pagamento_id || !$this->core_model->get_by_id('formas_pagamentos', array('forma_pagamento_id' => $forma_pagamento_id))) {
 			$this->session->set_flashdata('error', 'Forma de pagamento não encontrada');
+			redirect($this->router->fetch_class());
+		}
+
+		if($this->core_model->get_by_id('formas_pagamentos', array('forma_pagamento_id' => $forma_pagamento_id, 'forma_pagamento_ativa' => 1))){
+			$this->session->set_flashdata('error', 'Não é possível excluir uma forma de pagamento ativa');
 			redirect($this->router->fetch_class());
 		}
 
