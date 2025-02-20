@@ -139,7 +139,7 @@
 									<?php endif; ?>
 
 									<button type="submit" class="btn btn-primary mr-2">Salvar</button>
-									<a href="<?php echo base_url('usuarios'); ?>" class="btn btn-light">Voltar</a>
+									<a href="<?php echo base_url($this->router->fetch_class()); ?>" class="btn btn-light">Voltar</a>
 								</form>
 
 							</div>
