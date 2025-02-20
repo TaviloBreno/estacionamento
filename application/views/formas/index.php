@@ -80,7 +80,7 @@
 										<td class="text-center">
 											<?php echo ($forma->forma_pagamento_ativa == 1 ? '<span class="badge badge-success">Sim</span>' : '<span class="badge badge-danger">Não</span>'); ?>
 										</td>
-										<td class="text-center"><?php echo date('d/m/Y H:i:s', strtotime($forma->forma_pagamento_data_alteracao)); ?></td>
+										<td class="text-center"><?php echo formata_data_banco_com_hora($forma->forma_pagamento_data_alteracao); ?></td>
 										<td>
 											<div class="table-actions text-center">
 												<a href="<?php echo base_url('formas/core/'.$forma->forma_pagamento_id); ?>" class="btn btn-icon btn-primary" style="color: white;" data-toggle="tooltip" data-placement="top" title="Editar forma de pagamento">
