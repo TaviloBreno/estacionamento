@@ -80,10 +80,15 @@
 								<?php foreach ($mensalidades as $mensalidade): ?>
 									<tr>
 										<td><?php echo $mensalidade->mensalidade_id; ?></td>
-										<td class="text-center"><?php echo $mensalidade->mensalista_nome; ?></td>
+										<td class="text-center"><i class="ik ik-eye"></i> <a data-toggle="tooltip" data-placement="bottom" title="Vizualizar Mensalista" href="<?php echo base_url('mensalistas/core/' . $mensalidade->mensalista_id); ?>"><?php echo $mensalidade->mensalista_nome; ?></a></td>
 										<td class="text-center"><?php echo $mensalidade->mensalista_cpf; ?></td>
 										<td class="text-center"><?php echo $mensalidade->precificacao_categoria; ?></td>
-										<td class="text-center"><?php echo 'R$ ' . number_format($mensalidade->mensalidade_valor_mensalidade, 2, ',', '.'); ?></td>
+										<td class="text-center">
+											<?php
+											$valor_mensalidade = floatval(str_replace(',', '.', $mensalidade->mensalidade_valor_mensalidade));
+											echo 'R$ ' . number_format($valor_mensalidade, 2, ',', '.');
+											?>
+										</td>
 										<td class="text-center">
 											<?php
 											echo $mensalidade->mensalidade_data_pagamento
@@ -95,7 +100,7 @@
 											<?php
 											echo ($mensalidade->mensalidade_status == 1)
 												? '<span class="badge badge-success">Pago</span>'
-												: '<span class="badge badge-danger">Em aberto</span>';
+												: '<span class="badge badge-warning">Em aberto</span>';
 											?>
 										</td>
 										<td class="text-center"><?php echo formata_data_banco_com_hora($mensalidade->mensalidade_data_alteracao); ?></td>

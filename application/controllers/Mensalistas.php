@@ -91,6 +91,8 @@ class Mensalistas extends CI_Controller
 					$this->input->post()
 				);
 
+				$data['mensalista_estado'] = strtoupper($this->input->post('mensalista_estado'));
+
 				$data = html_escape($data);
 
 				$this->core_model->insert('mensalistas', $data);
@@ -125,6 +127,17 @@ class Mensalistas extends CI_Controller
 				$this->form_validation->set_rules('mensalista_ativo', 'Status', 'required|in_list[0,1]');
 
 				if($this->form_validation->run()){
+					$mensalista_ativo = $this->input->post('mensalista_ativo');
+
+					if($mensalista_ativo == 0) {
+						if($this->db->table_exists('mensalidades')) {
+							if($this->core_model->get_by_id('mensalidades', array('mensalidade_mensalista_id' => $mensalista_id, 'mensalidade_status' => 0))) {
+								$this->session->set_flashdata('error', 'Este mensalista não pode ser desativado, pois ele possui mensalidades em aberto');
+								redirect($this->router->fetch_class());
+							}
+						}
+					}
+
 					$data = elements(
 						array(
 							'mensalista_nome',
@@ -144,9 +157,12 @@ class Mensalistas extends CI_Controller
 							'mensalista_complemento',
 							'mensalista_obs',
 							'mensalista_ativo',
+							'mensalista_dia_vencimento',
 						),
 						$this->input->post()
 					);
+
+					$data['mensalista_estado'] = strtoupper($this->input->post('mensalista_estado'));
 
 					$data = html_escape($data);
 
@@ -186,7 +202,6 @@ class Mensalistas extends CI_Controller
 		}
 
 		$cpf = str_pad(preg_replace('/[^0-9]/', '', $cpf), 11, '0', STR_PAD_LEFT);
-		// Verifica se nenhuma das sequências abaixo foi digitada, caso seja, retorna falso
 		if (strlen($cpf) != 11 || $cpf == '00000000000' || $cpf == '11111111111' || $cpf == '22222222222' || $cpf == '33333333333' || $cpf == '44444444444' || $cpf == '55555555555' || $cpf == '66666666666' || $cpf == '77777777777' || $cpf == '88888888888' || $cpf == '99999999999') {
 
 			$this->form_validation->set_message('valida_cpf', 'Por favor digite um CPF válido');

@@ -99,6 +99,15 @@ class Precificacoes extends CI_Controller
 						}
 					}
 
+					if($precificacao_ativa == 0){
+						if($this->db->table_exists('mensalidades')){
+							if($this->core_model->get_by_id('mensalidades', array('mensalidade_precificacao_id' => $precificacao_id, 'mensalidade_status' => 0))){
+								$this->session->set_flashdata('error', 'Essa precificação não pode ser desativada, pois existem mensalidades com ela');
+								redirect($this->router->fetch_class());
+							}
+						}
+					}
+
 					$data = elements(
 						array(
 							'precificacao_categoria',
