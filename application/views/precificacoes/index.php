@@ -85,7 +85,7 @@
 											<td><?php echo ($categoria->precificacao_ativa == 1 ? '<span class="badge badge-success">Sim</span>' : '<span class="badge badge-danger">Não</span>'); ?></td>
 											<td>
 												<div class="table-actions text-center">
-													<a type="button" href="<?php echo base_url('precificacoes/core/'.$categoria->precificacao_id); ?>" class="btn btn-icon btn-primary" style="color: white;" data-toggle="tooltip" data-placement="top" title="Editar <?php echo ucfirst(str_replace('a', 'á', $this->router->fetch_class())); ?>">
+													<a type="button" href="<?php echo base_url($this->router->fetch_class().'/core/'.$categoria->precificacao_id); ?>" class="btn btn-icon btn-primary" style="color: white;" data-toggle="tooltip" data-placement="top" title="Editar <?php echo ucfirst(str_replace('a', 'á', $this->router->fetch_class())); ?>">
 														<i class="ik ik-edit"></i>
 													</a>
 

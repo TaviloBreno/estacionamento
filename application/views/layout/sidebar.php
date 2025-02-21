@@ -31,6 +31,9 @@
 				<div class="nav-item <?php echo ($this->router->fetch_class() == 'sistema' && $this->router->fetch_method() == 'index' ? 'active' : ''); ?>">
 					<a data-toggle="tooltip" data-placement="bottom" title="Gerenciar Sistema" href="<?php echo base_url('sistema'); ?>"><i class="ik ik-settings"></i><span>Gerenciar Sistema</span></a>
 				</div>
+				<div class="nav-item <?php echo ($this->router->fetch_class() == 'mensalidades' && $this->router->fetch_method() == 'index' ? 'active' : ''); ?>">
+					<a data-toggle="tooltip" data-placement="bottom" title="Gerenciar Mensalidades" href="<?php echo base_url('mensalidades'); ?>"><i class="fas fa-hand-holding-usd"></i><span>Mensalidades</span></a>
+				</div>
 				<div class="nav-item <?php echo ($this->router->fetch_class() == 'formas' && $this->router->fetch_method() == 'index' ? 'active' : ''); ?>">
 					<a data-toggle="tooltip" data-placement="bottom" title="Gerenciar Formas de Pagamento" href="<?php echo base_url('formas'); ?>"><i class="ik ik-credit-card"></i><span>Formas de Pagamento</span></a>
 				</div>

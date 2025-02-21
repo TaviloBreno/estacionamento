@@ -9,7 +9,7 @@
 				<div class="row align-items-end">
 					<div class="col-lg-8">
 						<div class="page-header-title">
-							<i class="fas fa-user-tie bg-blue"></i>
+							<i class="fas fa-file-invoice-dollar bg-blue"></i>
 							<div class="d-inline">
 								<h5><?php echo $titulo; ?></h5>
 								<span><?php echo $subtitulo; ?></span>
@@ -59,51 +59,65 @@
 				<div class="col-md-12">
 					<div class="card">
 						<div class="card-header d-block">
-							<a title="Cadastrar novo mensalista" class="btn btn-success float-right" href="<?php echo base_url('mensalistas/core'); ?>">+ Novo</a>
+							<a title="Cadastrar nova mensalidade" class="btn btn-success float-right" href="<?php echo base_url('mensalidades/core'); ?>">+ Nova Mensalidade</a>
 						</div>
 						<div class="card-body">
 							<table class="table data-table">
 								<thead>
 								<tr>
 									<th>#</th>
-									<th class="text-center">Nome Completo</th>
+									<th class="text-center">Mensalista</th>
 									<th class="text-center">CPF</th>
-									<th class="text-center">Telefone</th>
+									<th class="text-center">Categoria</th>
+									<th class="text-center">Valor</th>
+									<th class="text-center">Vencimento</th>
+									<th class="text-center">Pagamento</th>
 									<th class="text-center">Status</th>
-									<th class="text-center">Última Alteração</th>
 									<th class="text-center">Ações</th>
 								</tr>
 								</thead>
 								<tbody>
-								<?php foreach ($mensalistas as $mensalista): ?>
+								<?php foreach ($mensalidades as $mensalidade): ?>
 									<tr>
-										<td><?php echo $mensalista->mensalista_id; ?></td>
-										<td class="text-center"><?php echo $mensalista->mensalista_nome . ' ' . $mensalista->mensalista_sobrenome; ?></td>
-										<td class="text-center"><?php echo $mensalista->mensalista_cpf; ?></td>
-										<td class="text-center"><?php echo $mensalista->mensalista_telefone_movel; ?></td>
+										<td><?php echo $mensalidade->mensalidade_id; ?></td>
+										<td class="text-center"><?php echo $mensalidade->mensalista_nome; ?></td>
+										<td class="text-center"><?php echo $mensalidade->mensalista_cpf; ?></td>
+										<td class="text-center"><?php echo $mensalidade->precificacao_categoria; ?></td>
+										<td class="text-center"><?php echo 'R$ ' . number_format($mensalidade->mensalidade_valor_mensalidade, 2, ',', '.'); ?></td>
 										<td class="text-center">
-											<?php echo ($mensalista->mensalista_ativo == 1 ? '<span class="badge badge-success">Ativo</span>' : '<span class="badge badge-danger">Inativo</span>'); ?>
+											<?php
+											echo $mensalidade->mensalidade_data_pagamento
+												? date('d/m/Y H:i', strtotime($mensalidade->mensalidade_data_pagamento))
+												: '<span class="badge badge-warning">Pendente</span>';
+											?>
 										</td>
-										<td class="text-center"><?php echo formata_data_banco_com_hora($mensalista->mensalista_data_alteracao); ?></td>
+										<td class="text-center">
+											<?php
+											echo ($mensalidade->mensalidade_status == 1)
+												? '<span class="badge badge-success">Pago</span>'
+												: '<span class="badge badge-danger">Em aberto</span>';
+											?>
+										</td>
+										<td class="text-center"><?php echo formata_data_banco_com_hora($mensalidade->mensalidade_data_alteracao); ?></td>
 										<td>
 											<div class="table-actions text-center">
-												<a href="<?php echo base_url($this->router->fetch_class().'/core/'.$mensalista->mensalista_id); ?>" class="btn btn-icon btn-primary" style="color: white;" data-toggle="tooltip" data-placement="top" title="Editar mensalista">
+												<a href="<?php echo base_url($this->router->fetch_class().'/core/'.$mensalidade->mensalidade_id); ?>" class="btn btn-icon btn-primary" style="color: white;" data-toggle="tooltip" data-placement="top" title="Editar mensalidade">
 													<i class="ik ik-edit"></i>
 												</a>
-												<button type="button" class="btn btn-icon btn-danger" data-toggle="modal" data-target="#mensalista-<?php echo $mensalista->mensalista_id; ?>" title="Excluir mensalista">
+												<button type="button" class="btn btn-icon btn-danger" data-toggle="modal" data-target="#mensalidade-<?php echo $mensalidade->mensalidade_id; ?>" title="Excluir mensalidade">
 													<i class="ik ik-trash"></i>
 												</button>
 											</div>
 										</td>
 									</tr>
 
-									<div class="modal fade" id="mensalista-<?php echo $mensalista->mensalista_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+									<div class="modal fade" id="mensalidade-<?php echo $mensalidade->mensalidade_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
 										<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 											<div class="modal-content">
 												<div class="modal-header">
 													<h5 class="modal-title" id="exampleModalCenterLabel">
 														<i class="fas fa-exclamation-triangle alert-warning"></i>
-														Você tem certeza que deseja excluir o mensalista <?php echo $mensalista->mensalista_nome . ' ' . $mensalista->mensalista_sobrenome; ?>?
+														Você tem certeza que deseja excluir esta mensalidade?
 													</h5>
 													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 														<span aria-hidden="true">&times;</span>
@@ -111,7 +125,7 @@
 												</div>
 												<div class="modal-footer">
 													<button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
-													<a href="<?php echo base_url($this->router->fetch_class().'/del/'.$mensalista->mensalista_id); ?>" class="btn btn-primary" style="color: white;">Sim, excluir</a>
+													<a href="<?php echo base_url($this->router->fetch_class().'/del/'.$mensalidade->mensalidade_id); ?>" class="btn btn-primary" style="color: white;">Sim, excluir</a>
 												</div>
 											</div>
 										</div>
