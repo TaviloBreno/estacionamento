@@ -49,7 +49,7 @@ class Mensalidades extends CI_Controller
 				),
 				'scripts' => array(
 					'mask/jquery.mask.min.js',
-					'mask/custom.js',
+					'mask/estacionar.js',
 				),
 				'mensalistas' => $this->core_model->get_all('mensalistas'),
 				'precificacoes' => $this->core_model->get_all('precificacoes'),
@@ -124,7 +124,7 @@ class Mensalidades extends CI_Controller
 						),
 						'scripts' => array(
 							'mask/jquery.mask.min.js',
-							'mask/custom.js',
+							'mask/estacionar.js',
 							'select2/dist/js/select2.min.js',
 						),
 						'mensalidade' => $this->core_model->get_by_id('mensalidades', array('mensalidade_id' => $mensalidade_id)),

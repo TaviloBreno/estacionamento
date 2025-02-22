@@ -44,7 +44,7 @@ class Mensalistas extends CI_Controller
 				'icone_view' => 'fas fa-user-tie',
 				'scripts' => array(
 					'mask/jquery.mask.min.js',
-					'mask/custom.js',
+					'mask/estacionar.js',
 				),
 			);
 
@@ -176,7 +176,7 @@ class Mensalistas extends CI_Controller
 						'icone_view' => 'fas fa-user-tie',
 						'scripts' => array(
 							'mask/jquery.mask.min.js',
-							'mask/custom.js',
+							'mask/estacionar.js',
 						),
 						'mensalista' => $this->core_model->get_by_id('mensalistas', array('mensalista_id' => $mensalista_id)),
 					);

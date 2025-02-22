@@ -83,7 +83,7 @@
 										<td class="text-center"><?php echo $estacionado->estacionar_placa_veiculo; ?></td>
 										<td class="text-center"><?php echo $estacionado->forma_pagamento_nome; ?></td>
 										<td class="text-center">
-											<?php echo ($estacionado->estacionar_status == 1 ? '<span class="badge badge-success">Ativo</span>' : '<span class="badge badge-danger">Inativo</span>'); ?>
+											<?php echo ($estacionado->estacionar_status == 0 ? '<span class="badge badge-warning">Em aberto</span>' : '<span class="badge badge-success">Fechado</span>'); ?>
 										</td>
 										<td>
 											<div class="table-actions text-center">
