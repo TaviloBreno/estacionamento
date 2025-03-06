@@ -59,7 +59,7 @@
 				<div class="col-md-12">
 					<div class="card">
 						<div class="card-header d-block">
-							<a title="Cadastrar nova mensalidade" class="btn btn-success float-right" href="<?php echo base_url('mensalidades/core'); ?>">+ Nova Mensalidade</a>
+							<a title="Cadastrar nova mensalidade" class="btn btn-success float-right" href="<?php echo base_url('estacionar/core'); ?>">+ Novo</a>
 						</div>
 						<div class="card-body">
 							<table class="table data-table">
