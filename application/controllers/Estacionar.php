@@ -65,8 +65,11 @@ class Estacionar extends CI_Controller
 
 				$data = html_escape($data);
 
-				$this->core_model->insert('estacionar', $data);
-				redirect($this->router->fetch_class());
+				$this->core_model->insert('estacionar', $data, true);
+
+				$estacionar_id = $this->session->userdata('last_id');
+
+				redirect($this->router->fetch_class().'/acoes/'.$this->session->userdata('last_id'));
 			}else{
 				$data = array(
 					'titulo' => 'Cadastrar Ticket de Estacionamento',
@@ -119,7 +122,7 @@ class Estacionar extends CI_Controller
 					$data = html_escape($data);
 
 					$this->core_model->update('estacionar', $data, array('estacionar_id' => $estacionar_id));
-					redirect($this->router->fetch_class());
+					redirect($this->router->fetch_class() . '/acoes/' . $estacionar_id);
 
 				}else{
 
@@ -213,6 +216,25 @@ class Estacionar extends CI_Controller
 		}else{
 			$this->core_model->delete('estacionar', array('estacionar_id' => $estacionar_id));
 			redirect($this->router->fetch_class());
+		}
+	}
+
+	public function acoes($estacionar_id = null)
+	{
+		if(!$estacionar_id || !$this->core_model->get_by_id('estacionar', array('estacionar_id' => $estacionar_id))){
+			$this->session->set_flashdata('error', 'Ticket de estacionamento não encontrado para ações!');
+			redirect('estacionar');
+		}else{
+			$data = array(
+				'titulo' => 'Ações do Ticket de Estacionamento',
+				'subtitulo' => 'Ações do ticket de estacionamento',
+				'icone_view' => 'fas fa-question',
+				'estacionado' => $this->core_model->get_by_id('estacionar', array('estacionar_id' => $estacionar_id)),
+			);
+
+			$this->load->view('layout/header', $data);
+			$this->load->view('estacionar/acoes');
+			$this->load->view('layout/footer');
 		}
 	}
 }

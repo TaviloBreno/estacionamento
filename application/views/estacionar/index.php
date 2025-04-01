@@ -92,6 +92,10 @@
 												</a>
 												<button type="button" class="btn btn-icon btn-danger" data-toggle="modal" data-target="#estacionado-<?php echo $estacionado->estacionar_id; ?>" title="Excluir ticket">
 													<i class="ik ik-trash"></i>
+												</button>
+												<a href="<?php echo base_url($this->router->fetch_class().'/acoes/'.$estacionado->estacionar_id); ?>" class="btn btn-icon btn-success" style="color: white;" data-toggle="tooltip" data-placement="top" title="Ações no ticket">
+													<i class="ik ik-check-circle"></i>
+												</a>
 											</div>
 										</td>
 									</tr>
