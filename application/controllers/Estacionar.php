@@ -24,6 +24,7 @@ class Estacionar extends CI_Controller
 			'icone_view' => 'ik ik-truck',
 			'styles' => array(
 				'datatables.net-bs4/css/dataTables.bootstrap4.min.css',
+				'../dist/css/estacionar.css'
 			),
 			'scripts' => array(
 				'datatables.net/js/jquery.dataTables.min.js',
@@ -32,6 +33,18 @@ class Estacionar extends CI_Controller
 				'datatables.net/js/flashcards.js',
 			),
 			'estacionados' => $this->estacionar_model->get_all(),
+			'numero_vagas_pequeno' => $this->estacionar_model->get_numero_vagas(1),
+			'vagas_ocupadas_pequeno' => $this->core_model->get_all('estacionar', array('estacionar_status' => 0, 'estacionar_precificacao_id' => 1)),
+			'numero_vagas_medio' => $this->estacionar_model->get_numero_vagas(2),
+			'vagas_ocupadas_medio' => $this->core_model->get_all('estacionar', array('estacionar_status' => 0, 'estacionar_precificacao_id' => 2)),
+			'numero_vagas_grande' => $this->estacionar_model->get_numero_vagas(3),
+			'vagas_ocupadas_grande' => $this->core_model->get_all('estacionar', array('estacionar_status' => 0, 'estacionar_precificacao_id' => 3)),
+			'numero_vagas_moto' => $this->estacionar_model->get_numero_vagas(4),
+			'vagas_ocupadas_moto' => $this->core_model->get_all('estacionar', array('estacionar_status' => 0, 'estacionar_precificacao_id' => 4)),
+			'numero_vagas_caminhao' => $this->estacionar_model->get_numero_vagas(5),
+			'vagas_ocupadas_caminhao' => $this->core_model->get_all('estacionar', array('estacionar_status' => 0, 'estacionar_precificacao_id' => 5)),
+			'numero_vagas_bicicleta' => $this->estacionar_model->get_numero_vagas(6),
+			'vagas_ocupadas_bicicleta' => $this->core_model->get_all('estacionar', array('estacionar_status' => 0, 'estacionar_precificacao_id' => 6)),
 		);
 
 		$this->load->view('layout/header', $data);
