@@ -101,6 +101,8 @@ class Estacionar extends CI_Controller
 
 				if($estacionar_tempo_decorrido > '015'){
 					$this->form_validation->set_rules('estacionar_forma_pagamento_id', 'Forma de pagamento', 'trim|required');
+				}else{
+					$this->form_validation->set_rules('estacionar_valor_devido', 'Valor devido', 'trim');
 				}
 
 				if($this->form_validation->run()) {
@@ -213,10 +215,14 @@ class Estacionar extends CI_Controller
 		if(!$estacionar_id || !$this->core_model->get_by_id('estacionar', array('estacionar_id' => $estacionar_id))){
 			$this->session->set_flashdata('error', 'Ticket de estacionamento não encontrado para exclusão!');
 			redirect('estacionar');
-		}else{
-			$this->core_model->delete('estacionar', array('estacionar_id' => $estacionar_id));
-			redirect($this->router->fetch_class());
 		}
+
+		if($this->core_model->get_by_id('estacionar', array('estacionar_id' => $estacionar_id, 'estacionar_status' => 0))){
+			$this->session->set_flashdata('error', 'Ticket de estacionamento não pode ser excluído, pois está em aberto!');
+			redirect('estacionar');
+		}
+
+		$this->core_model->delete('estacionar', array('estacionar_id' => $estacionar_id));
 	}
 
 	public function acoes($estacionar_id = null)
