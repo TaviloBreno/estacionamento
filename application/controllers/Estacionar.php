@@ -237,4 +237,69 @@ class Estacionar extends CI_Controller
 			$this->load->view('layout/footer');
 		}
 	}
+
+	public function pdf($estacionar_id = null)
+	{
+		if (!$this->core_model->get_by_id('estacionar', array('estacionar_id' => $estacionar_id))) {
+			$this->session->set_flashdata('error', 'Ticket de estacionamento não encontrado para impressão!');
+			redirect('estacionar');
+		} else {
+			$this->load->library('pdf');
+
+			$empresa = $this->core_model->get_by_id('sistema', array('sistema_id' => 1));
+			$ticket = $this->core_model->get_by_id('estacionar', array('estacionar_id' => $estacionar_id));
+
+			$file_name = 'Ticket_Placa_' . $ticket->estacionar_placa_veiculo . '.pdf';
+
+			$html = '
+		<html>
+		<head>
+			<style>
+				body { font-family: Arial, sans-serif; font-size: 12px; }
+				.header { text-align: center; margin-bottom: 10px; }
+				.header h1 { margin: 5px 0; font-size: 18px; }
+				.header p { margin: 2px 0; font-size: 12px; }
+				hr { margin: 10px 0; }
+				.ticket-info { margin-top: 10px; }
+				.ticket-info h2 { font-size: 16px; margin-bottom: 10px; }
+				table { width: 100%; border-collapse: collapse; }
+				td { padding: 6px 4px; border-bottom: 1px solid #ccc; }
+				.label { font-weight: bold; width: 30%; }
+			</style>
+		</head>
+		<body>
+			<div class="header">
+				<h1>' . $empresa->sistema_razao_social . '</h1>
+				<p>' . $empresa->sistema_endereco . ', ' . $empresa->sistema_numero . '</p>
+				<p>' . $empresa->sistema_cidade . ' - ' . $empresa->sistema_estado . '</p>
+				<p>Telefone: ' . $empresa->sistema_telefone_fixo . '</p>
+			</div>
+			<hr>
+			<div class="ticket-info">
+				<h2>Recibo de Estacionamento</h2>
+				<table>
+					<tr><td class="label">Placa:</td><td>' . $ticket->estacionar_placa_veiculo . '</td></tr>
+					<tr><td class="label">Marca:</td><td>' . $ticket->estacionar_marca_veiculo . '</td></tr>
+					<tr><td class="label">Modelo:</td><td>' . $ticket->estacionar_modelo_veiculo . '</td></tr>
+					<tr><td class="label">Vaga:</td><td>' . $ticket->estacionar_numero_vaga . '</td></tr>
+					<tr><td class="label">Valor Hora:</td><td>R$ ' . number_format($ticket->estacionar_valor_hora, 2, ',', '.') . '</td></tr>
+					<tr><td class="label">Data Entrada:</td><td>' . formata_data_banco_com_hora($ticket->estacionar_data_entrada) . '</td></tr>
+					<tr><td class="label">Data Saída:</td><td>' . formata_data_banco_com_hora($ticket->estacionar_data_saida) . '</td></tr>
+					<tr><td class="label">Tempo Decorrido:</td><td>' . $ticket->estacionar_tempo_decorrido . '</td></tr>
+					<tr><td class="label">Valor Devido:</td><td><strong>R$ ' . number_format($ticket->estacionar_valor_devido, 2, ',', '.') . '</strong></td></tr>
+				</table>
+			</div>
+
+			<div style="text-align:center; margin-top: 30px;">
+				<p><em>"A gentileza no atendimento é o combustível que move a preferência do cliente."</em></p>
+				<p><strong>– Sistema Estacionamento</strong></p>
+				<p style="margin-top: 10px;"><strong>Volte sempre!</strong></p>
+			</div>
+		</body>
+		</html>
+		';
+
+			$this->pdf->createPDF($html, $file_name, false);
+		}
+	}
 }
