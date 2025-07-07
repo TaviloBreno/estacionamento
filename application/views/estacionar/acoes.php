@@ -62,14 +62,35 @@
 			<?php endif; ?>
 
 			<div class="row">
-				<!-- imprestion, goal, impect start -->
-				<div class="col-xl-4 col-md-12">
+				<!-- Cards de ações -->
+				<div class="col-xl-3 col-md-6">
 					<div class="card comp-card">
 						<div class="card-body">
 							<div class="row align-items-center">
 								<div class="col">
-									<h6 class="mb-25">Impressão do ticket</h6>
-									<a class="btn btn-primary text-white" target="_blank" href="<?php echo base_url($this->router->fetch_class()."/pdf/".$estacionado->estacionar_id); ?>">Imprimir</a>
+									<h6 class="mb-25">Ticket de Entrada</h6>
+									<a class="btn btn-success text-white" target="_blank" 
+									   href="<?php echo base_url($this->router->fetch_class()."/ticket_entrada/".$estacionado->estacionar_id); ?>">
+									   <i class="fa fa-ticket-alt mr-1"></i>Imprimir
+									</a>
+								</div>
+								<div class="col-auto">
+									<i class="fas fa-ticket-alt bg-success"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-3 col-md-6">
+					<div class="card comp-card">
+						<div class="card-body">
+							<div class="row align-items-center">
+								<div class="col">
+									<h6 class="mb-25">Recibo Completo</h6>
+									<a class="btn btn-primary text-white" target="_blank" 
+									   href="<?php echo base_url($this->router->fetch_class()."/pdf/".$estacionado->estacionar_id); ?>">
+									   <i class="fa fa-print mr-1"></i>Imprimir
+									</a>
 								</div>
 								<div class="col-auto">
 									<i class="fas fa-print bg-blue"></i>
@@ -78,13 +99,15 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xl-4 col-md-6">
+				<div class="col-xl-3 col-md-6">
 					<div class="card comp-card">
 						<div class="card-body">
 							<div class="row align-items-center">
 								<div class="col">
 									<h6 class="mb-25">Listar Tickets</h6>
-									<a class="btn bg-green text-white" href="<?php echo base_url('estacionar'); ?>">Listar</a>
+									<a class="btn bg-green text-white" href="<?php echo base_url('estacionar'); ?>">
+										<i class="fa fa-list mr-1"></i>Listar
+									</a>
 								</div>
 								<div class="col-auto">
 									<i class="fas fa-list bg-green"></i>
@@ -93,13 +116,15 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xl-4 col-md-6">
+				<div class="col-xl-3 col-md-6">
 					<div class="card comp-card">
 						<div class="card-body">
 							<div class="row align-items-center">
 								<div class="col">
 									<h6 class="mb-25">Novo Ticket</h6>
-									<a class="btn bg-yellow text-white" href="<?php echo base_url('estacionar/core'); ?>">Novo</a>
+									<a class="btn bg-yellow text-white" href="<?php echo base_url('estacionar/core'); ?>">
+										<i class="fa fa-plus mr-1"></i>Novo
+									</a>
 								</div>
 								<div class="col-auto">
 									<i class="fas fa-newspaper bg-yellow"></i>

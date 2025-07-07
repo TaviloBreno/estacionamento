@@ -82,7 +82,8 @@ class Estacionar extends CI_Controller
 
 				$estacionar_id = $this->session->userdata('last_id');
 
-				redirect($this->router->fetch_class().'/acoes/'.$this->session->userdata('last_id'));
+				// Redirecionar para página de sucesso
+				redirect($this->router->fetch_class().'/sucesso/'.$estacionar_id);
 			}else{
 				$data = array(
 					'titulo' => 'Cadastrar Ticket de Estacionamento',
@@ -168,6 +169,25 @@ class Estacionar extends CI_Controller
 				}
 			}
 		}
+	}
+
+	public function sucesso($estacionar_id = null)
+	{
+		if(!$estacionar_id || !$this->core_model->get_by_id('estacionar', array('estacionar_id' => $estacionar_id))){
+			$this->session->set_flashdata('error', 'Ticket de estacionamento não encontrado!');
+			redirect('estacionar');
+		}
+
+		$data = array(
+			'titulo' => 'Ticket Gerado com Sucesso',
+			'subtitulo' => 'Veículo estacionado com sucesso',
+			'icone_view' => 'ik ik-check-circle',
+			'estacionado' => $this->estacionar_model->get_by_id($estacionar_id),
+		);
+
+		$this->load->view('layout/header', $data);
+		$this->load->view('estacionar/sucesso', $data);
+		$this->load->view('layout/footer');
 	}
 
 	public function check_range_vagas_categoria($numero_vaga) {
@@ -319,6 +339,206 @@ class Estacionar extends CI_Controller
 		';
 
 			$this->pdf->createPDF($html, $file_name, false);
+		}
+	}
+
+	public function ticket_entrada($estacionar_id = null)
+	{
+		if (!$this->core_model->get_by_id('estacionar', array('estacionar_id' => $estacionar_id))) {
+			$this->session->set_flashdata('error', 'Ticket de estacionamento não encontrado!');
+			redirect('estacionar');
+		} else {
+			$this->load->library('pdf');
+
+			$empresa = $this->core_model->get_by_id('sistema', array('sistema_id' => 1));
+			$ticket = $this->estacionar_model->get_by_id($estacionar_id);
+
+			// Gerar código único do ticket
+			$codigo_ticket = format_ticket_code($estacionar_id);
+			$qr_code_data = generate_ticket_qr_data($ticket);
+			$qr_code_base64 = generate_qr_code_base64($qr_code_data, 120);
+
+			$file_name = 'Ticket_Entrada_' . $ticket->estacionar_placa_veiculo . '_' . date('YmdHis');
+
+			$html = '
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<meta charset="UTF-8">
+				<style>
+					body { 
+						font-family: Arial, sans-serif; 
+						font-size: 11px; 
+						margin: 0; 
+						padding: 10px;
+						width: 80mm;
+					}
+					.ticket-container {
+						border: 2px dashed #333;
+						padding: 15px;
+						text-align: center;
+						background: #fff;
+					}
+					.header { 
+						text-align: center; 
+						margin-bottom: 15px; 
+						border-bottom: 1px solid #ddd;
+						padding-bottom: 10px;
+					}
+					.header h1 { 
+						margin: 0 0 5px 0; 
+						font-size: 16px; 
+						color: #333;
+						text-transform: uppercase;
+					}
+					.header p { 
+						margin: 2px 0; 
+						font-size: 9px; 
+						color: #666;
+					}
+					.ticket-code {
+						background: #f0f0f0;
+						border: 1px solid #ddd;
+						padding: 8px;
+						margin: 10px 0;
+						font-size: 14px;
+						font-weight: bold;
+						letter-spacing: 1px;
+					}
+					.vehicle-info {
+						margin: 15px 0;
+						text-align: left;
+					}
+					.info-row {
+						display: table;
+						width: 100%;
+						margin-bottom: 5px;
+					}
+					.info-label {
+						display: table-cell;
+						font-weight: bold;
+						width: 40%;
+						color: #333;
+					}
+					.info-value {
+						display: table-cell;
+						width: 60%;
+					}
+					.highlight-box {
+						background: #e8f4f8;
+						border: 1px solid #bee5eb;
+						padding: 10px;
+						margin: 10px 0;
+						border-radius: 3px;
+					}
+					.important-info {
+						background: #fff3cd;
+						border: 1px solid #ffeaa7;
+						padding: 8px;
+						margin: 10px 0;
+						border-radius: 3px;
+						font-size: 9px;
+					}
+					.footer {
+						margin-top: 15px;
+						padding-top: 10px;
+						border-top: 1px solid #ddd;
+						font-size: 8px;
+						color: #666;
+					}
+					.barcode {
+						margin: 10px 0;
+						font-family: "Courier New", monospace;
+						font-size: 8px;
+						letter-spacing: 1px;
+					}
+					.qr-code-section {
+						text-align: center;
+						margin: 10px 0;
+						padding: 5px;
+					}
+				</style>
+			</head>
+			<body>
+				<div class="ticket-container">
+					<div class="header">
+						<h1>' . ($empresa ? $empresa->sistema_razao_social : 'Sistema de Estacionamento') . '</h1>';
+			
+			if($empresa) {
+				$html .= '
+						<p>' . $empresa->sistema_endereco . ', ' . $empresa->sistema_numero . '</p>
+						<p>' . $empresa->sistema_cidade . ' - ' . $empresa->sistema_estado . '</p>
+						<p>Tel: ' . $empresa->sistema_telefone_fixo . '</p>';
+			}
+			
+			$html .= '
+					</div>
+
+					<div class="ticket-code">
+						TICKET: ' . $codigo_ticket . '
+					</div>
+
+					<div class="vehicle-info">
+						<div class="info-row">
+							<div class="info-label">PLACA:</div>
+							<div class="info-value"><strong>' . strtoupper($ticket->estacionar_placa_veiculo) . '</strong></div>
+						</div>
+						<div class="info-row">
+							<div class="info-label">VEÍCULO:</div>
+							<div class="info-value">' . $ticket->estacionar_marca_veiculo . ' ' . $ticket->estacionar_modelo_veiculo . '</div>
+						</div>
+						<div class="info-row">
+							<div class="info-label">VAGA:</div>
+							<div class="info-value"><strong>' . $ticket->estacionar_numero_vaga . '</strong></div>
+						</div>
+						<div class="info-row">
+							<div class="info-label">CATEGORIA:</div>
+							<div class="info-value">' . $ticket->precificacao_categoria . '</div>
+						</div>
+					</div>
+
+					<div class="highlight-box">
+						<div class="info-row">
+							<div class="info-label">ENTRADA:</div>
+							<div class="info-value"><strong>' . date('d/m/Y H:i', strtotime($ticket->estacionar_data_entrada)) . '</strong></div>
+						</div>
+						<div class="info-row">
+							<div class="info-label">VALOR/HORA:</div>
+							<div class="info-value"><strong>R$ ' . number_format($ticket->estacionar_valor_hora, 2, ',', '.') . '</strong></div>
+						</div>				</div>
+
+				<div class="qr-code-section">';
+			
+			if ($qr_code_base64) {
+				$html .= '
+					<img src="' . $qr_code_base64 . '" alt="QR Code" style="width: 80px; height: 80px; margin: 10px 0;" />';
+			} else {
+				$html .= '
+					<div class="barcode">
+						||| ' . $qr_code_data . ' |||
+					</div>';
+			}
+			
+			$html .= '
+				</div>
+
+					<div class="important-info">
+						<strong>IMPORTANTE:</strong><br>
+						• Mantenha este ticket para a saída<br>
+						• Tolerância: 15 minutos<br>
+						• Perdeu o ticket? Taxa adicional<br>
+						• Horário funcionamento: 24h
+					</div>
+
+					<div class="footer">
+						<p>Emitido em: ' . date('d/m/Y H:i:s') . '</p>
+						<p>Sistema de Estacionamento v1.0</p>
+					</div>
+				</div>
+			</body>
+			</html>';
+
+			$this->pdf->createPDF($html, $file_name, false, 'A6', 'portrait');
 		}
 	}
 }
