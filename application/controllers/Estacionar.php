@@ -243,7 +243,7 @@ class Estacionar extends CI_Controller
 		}
 	}
 
-	public function del($estaionar_id = null)
+	public function del($estacionar_id = null)
 	{
 		if(!$estacionar_id || !$this->core_model->get_by_id('estacionar', array('estacionar_id' => $estacionar_id))){
 			$this->session->set_flashdata('error', 'Ticket de estacionamento não encontrado para exclusão!');
