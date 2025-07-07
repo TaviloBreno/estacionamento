@@ -11,7 +11,7 @@ use Dompdf\Exception;
 
 class Pdf {
 
-    function createPDF($html, $filename = '', $download = TRUE, $paper = 'A6', $orientation = 'portrait') {
+    function createPDF($html, $filename = '', $download = TRUE, $paper = 'A4', $orientation = 'portrait') {
 //        $dompdf = new dompdf\DOMPDF(); //Para localhost
         $dompdf = new Dompdf(); //Para hospedado
         $dompdf->load_html($html);
